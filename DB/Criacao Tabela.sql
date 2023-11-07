@@ -27,6 +27,12 @@ CREATE TABLE Paciente (
     Prontuario varchar(50),
     fk_Prontuario_Id_Prontuario bigint(255)
 );
+
+CREATE TABLE Cadastro(
+ID bigint(255) PRIMARY KEY,
+email varchar(255),
+senha varchar(255)
+);
  
 ALTER TABLE Paciente ADD CONSTRAINT FK_Paciente_2
     FOREIGN KEY (fk_Prontuario_Id_Prontuario)

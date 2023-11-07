@@ -7,7 +7,9 @@ export async function verificaEmailExists(email) {
             [email]
         ); 
         const emailExists = resultEmail && resultEmail.length > 0 && resultEmail[0].length > 0;
-        return emailExists;
+        if(emailExists){
+            return resultEmail[0][0].ID
+        }
     } catch (error) {
         console.error("Erro ao verificar o email:", error);
         throw error;
@@ -20,4 +22,20 @@ export function verificaSenha(senha, confSenha){
 
 export function verificaEmail(email, confEmail){
     return email === confEmail;
+}
+
+export async function verificaFuncExists(funcionario) {
+    try {
+        const resultFunc = await connection.query(
+            "SELECT Id_funcionario FROM funcionario WHERE Nome_Funcionario = ?",
+            [funcionario]
+        ); 
+        if(resultFunc && resultFunc.length > 0 && resultFunc[0].length > 0){
+            return resultFunc[0][0].Id_funcionario  
+        }
+        return null;
+    } catch (error) {
+        console.error("Erro ao verificar o funcionario:", error);
+        throw error;
+    }
 }

@@ -3,13 +3,13 @@ import { connection } from "./db.js";
 
 export class DatabaseSQL {
 	async create(infos) {
-		const idCadastro = GenerateID();
+		const idFuncionario = GenerateID();
 		// Puxa os dados passado pelo post
-		const { email, senha } = infos;
+		const { nome, idade, cargo } = infos;
 		// insere no banco de dados
 		const sql =
-			"INSERT INTO cadastro (Idade_Funcionario, Nome_Funcionario, Id_funcionario, Cargo) VALUES (?, ?, ?, ?)";
-		const values = [idCadastro, email, senha];
+			"INSERT INTO funcionario (Idade_Funcionario, Nome_Funcionario, Id_funcionario, Cargo) VALUES (?, ?, ?, ?)";
+		const values = [idade, nome, idFuncionario, cargo];
 
 		// Aqui executa a inserção
 		try {

@@ -7,6 +7,6 @@ export function GenerateID() {
 		strNumber = strNumber.substring(0, 18);
 	}
 	let PacienteUUIDtrated = parseInt(strNumber, 10);
-	console.log(PacienteUUID);
+	// console.log(PacienteUUID);
 	return PacienteUUIDtrated;
 }
