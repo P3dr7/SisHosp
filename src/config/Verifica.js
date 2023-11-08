@@ -39,3 +39,14 @@ export async function verificaFuncExists(funcionario) {
         throw error;
     }
 }
+
+export async function verificaEnfermerio(idFunc){
+    try{
+        //Fazer logica de verificar o Id do enfermeiro para começar as funções dos enfermeiros 
+
+    }catch (error) {
+        console.error("Erro ao verificar o funcionario:", error);
+        throw error;
+    }
+
+}

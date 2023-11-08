@@ -1,8 +1,12 @@
 import { DatabaseSQL } from "../db/funcionario.js";
 import { verificaLogado } from "../config/verificaLogin.js";
 import { DatabaseSQLFarmaceutico } from "../db/farmaceutico.js";
+import { DatabaseSQLMedico } from "../db/medico.js";
 import { verificaEmailExists,verificaFuncExists } from "../config/Verifica.js";
+import { DatabaseSQLEnfermeiro } from "../db/enfermeiro.js";
 
+const dbEnfermeiro = new DatabaseSQLEnfermeiro();
+const dbMedico = new DatabaseSQLMedico();
 const dbFarmacia = new DatabaseSQLFarmaceutico(); 
 const database = new DatabaseSQL();
 
@@ -21,12 +25,22 @@ export const cadastra = async (request, reply) => {
     const idEmail = await verificaEmailExists(email);
     console.log(idEmail)
     try {
+        //puxa os dados do cadastro
+        const {idade, nome, cargo } = request.body
+
+        
         const verLogado = await verificaLogado(email, senha);
+        //Verifica se esta logado
         if (!verLogado) {
             return reply.status(400).send({ error: "Usuário não autenticado" });
         }
-        // Mudar aqui para o resto do codigo 
-        const {idade, nome, cargo } = request.body
+
+        //Verifica se o nome ja existe no banco de dados
+        const verFunc = await verificaFuncExists(nome);
+        if(verFunc){
+            return reply.status(400).send({ error: "Funcionairo Ja existente" });
+        }
+        
         await database.create({
 			idade,
 			nome,
@@ -40,6 +54,22 @@ export const cadastra = async (request, reply) => {
                 idFuncionario: idFunc,
             })
             return reply.status(200).send({ message: "Farmaceutico" });
+        }
+        if(cargo == "medico"){
+            const idFunc = await verificaFuncExists(nome)
+            await dbMedico.create({
+                idCadastro: idEmail, 
+                idFuncionario: idFunc,
+            })
+            return reply.status(200).send({ message: "Medico" });
+        }
+        if(cargo == "enfermeiro"){
+            const idFunc = await verificaFuncExists(nome)
+            await dbEnfermeiro.create({
+                idCadastro: idEmail, 
+                idFuncionario: idFunc,
+            })
+            return reply.status(200).send({ message: "enfermeiro" });
         }
 
         return reply.status(200).send({ message: "Certo" });
