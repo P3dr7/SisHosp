@@ -40,13 +40,55 @@ export async function verificaFuncExists(funcionario) {
     }
 }
 
-export async function verificaEnfermerio(idFunc){
+export async function verificaEnfermerio(idCad){
     try{
-        //Fazer logica de verificar o Id do enfermeiro para começar as funções dos enfermeiros 
+        const resultVerif =  await connection.query(
+            "select fk_enfermeiro_funcionario_Id_funcionario from enfermeiro where fk_enfermeiro_cadastro_ID = ?",
+            [idCad]
+        );
+        if(resultVerif && resultVerif.length > 0 && resultVerif[0].length > 0){
+            return resultVerif[0][0].fk_enfermeiro_funcionario_Id_funcionario 
+        }
+        return null;
 
     }catch (error) {
-        console.error("Erro ao verificar o funcionario:", error);
+        console.error("Erro ao verificar o enfermerio:", error);
         throw error;
     }
 
 }
+
+export async function verificaPacienteExists(nomePac){
+    try{
+        const resultVerifPac =  await connection.query(
+            "select Id_Paciente from paciente where Nome_Paciente = ?",
+            [nomePac]
+        );
+        if(resultVerifPac && resultVerifPac.length > 0 && resultVerifPac[0].length > 0){
+            return resultVerifPac[0][0].Id_Paciente
+        }
+        return null;
+
+    }catch (error) {
+        console.error("Erro ao verificar o Paciente:", error);
+        throw error;
+    }
+}
+
+export async function verificaProntuario(HEntrada){
+    try{
+
+        const resultTemPront = await connection.query(
+            "select Id_Prontuario from prontuario where Horario_Entrada = ?",
+            [HEntrada]
+        )
+        if(resultTemPront && resultTemPront.length > 0 && resultTemPront[0].length > 0){
+            return resultTemPront[0][0].Id_Prontuario
+        }
+        return null;
+
+    }catch(error)
+{
+    console.error("Erro ao verificar o Paciente:", error);
+    throw error;
+}}

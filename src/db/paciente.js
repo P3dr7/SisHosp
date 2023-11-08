@@ -1,15 +1,15 @@
-import { connection } from "./db";
-import { GenerateID } from "../config/ID";
+import { connection } from "./db.js";
+import { GenerateID } from "../config/ID.js";
 
-export class DatabaseSQL{
+export class DatabaseSQLPaciente{
     async create(infos) {
 		// Puxa os dados passado pelo post
-		const {nome, peso, pront, fkPront} = infos;
+		const {nome, peso} = infos;
 
-        const paciId = new GenerateID();
+        const paciId = GenerateID();
 		// insere no banco de dados
-        const sql = 'INSERT INTO pacientes (Id_Pacientes, Nome_Paciente, Peso_Paciente, Prontuario, fk_Prontuario_Id_Prontuario) VALUES (?, ?, ?, ?, ?)';
-        const values = [paciId, nome, peso, pront, fkPront];
+        const sql = 'INSERT INTO paciente (Id_Paciente, Nome_Paciente, Peso_Paciente) VALUES (?, ?, ?)';
+        const values = [paciId, nome, peso];
 
 		// Aqui executa a inserção 
 		try {

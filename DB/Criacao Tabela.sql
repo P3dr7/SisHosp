@@ -23,20 +23,13 @@ CREATE TABLE Remedios (
 CREATE TABLE Paciente (
     Id_Paciente bigint(255) PRIMARY KEY,
     Nome_Paciente varchar(255),
-    Peso_Paciente int(3),
-    Prontuario varchar(50),
-    fk_Prontuario_Id_Prontuario bigint(255)
-);
+    Peso_Paciente int(3));
 
 CREATE TABLE Cadastro(
 ID bigint(255) PRIMARY KEY,
 email varchar(255),
 senha varchar(255)
 );
- 
-ALTER TABLE Paciente ADD CONSTRAINT FK_Paciente_2
-    FOREIGN KEY (fk_Prontuario_Id_Prontuario)
-    REFERENCES Prontuario (Id_Prontuario);
     
 CREATE TABLE `app_saude`.`farmaceutico` (
   `fk_cadastro_ID` BIGINT(255) ,
@@ -80,6 +73,22 @@ CREATE TABLE `app_saude`.`enfermeiro` (
   CONSTRAINT `fk_enfermeiro_funcionario_Id_funcionario`
     FOREIGN KEY (`fk_enfermeiro_funcionario_Id_funcionario`)
     REFERENCES `app_saude`.`funcionario` (`Id_funcionario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+    
+CREATE TABLE `app_saude`.`tem` (
+  `fk_tem_prontuario_id` BIGINT(255),
+  `fk_tem_paciente_id` BIGINT(255),
+  INDEX `fk_tem_paciente_id_idx` (`fk_tem_paciente_id` ASC),
+  INDEX `fk_tem_prontuario_id_idx` (`fk_tem_prontuario_id` ASC),
+  CONSTRAINT `fk_tem_paciente_id`
+    FOREIGN KEY (`fk_tem_paciente_id`)
+    REFERENCES `app_saude`.`paciente` (`Id_Paciente`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_tem_prontuario_id`
+    FOREIGN KEY (`fk_tem_prontuario_id`)
+    REFERENCES `app_saude`.`prontuario` (`Id_Prontuario`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
