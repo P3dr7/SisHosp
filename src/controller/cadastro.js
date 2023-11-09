@@ -9,7 +9,7 @@ import bcrypt from "bcrypt";
 const database = new DatabaseSQL();
 
 export const cadastra = async (request, reply) => {
-	const { email, confEmail, senha, confSenha} = request.body;
+	const { email, confEmail, senha, confSenha } = request.body;
 	try {
 		const veriEmailExists = await verificaEmailExists(email);
 		const veriEmail = verificaEmail(email, confEmail);
@@ -34,7 +34,7 @@ export const cadastra = async (request, reply) => {
 
 		await database.create({
 			email,
-			senha: senhaHash,  // Armazenar a senha criptografada
+			senha: senhaHash, // Armazenar a senha criptografada
 		});
 
 		return reply.status(201).send();

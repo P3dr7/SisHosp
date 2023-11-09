@@ -92,4 +92,23 @@ CREATE TABLE `app_saude`.`tem` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
-    
+CREATE TABLE `app_saude`.`receitas` (
+  `Id_Receitas` BIGINT(255) NOT NULL,
+  `Data_Vencimento` DATETIME,
+  `Medicamentos` VARCHAR(255),
+  `Posologia` VARCHAR(45),
+  `fk_receitas_medicos_Id_Medico` BIGINT(255),
+  `fk_receitas_paciente_Id_Paciente` BIGINT(255),
+  PRIMARY KEY (`Id_Receitas`),
+  INDEX `fk_receitas_medicos_Id_Medico_idx` (`fk_receitas_medicos_Id_Medico` ASC),
+  INDEX `fk_receitas_pacientes_Id_paciente_idx` (`fk_receitas_paciente_Id_Paciente` ASC),
+  CONSTRAINT `fk_receitas_medicos_Id_Medico`
+    FOREIGN KEY (`fk_receitas_medicos_Id_Medico`)
+    REFERENCES `app_saude`.`medicos` (`fk_medicos_funcionario_Id_funcionario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_receitas_pacientes_Id_paciente`
+    FOREIGN KEY (`fk_receitas_paciente_Id_Paciente`)
+    REFERENCES `app_saude`.`paciente` (`Id_Paciente`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);

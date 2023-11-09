@@ -92,3 +92,77 @@ export async function verificaProntuario(HEntrada){
     console.error("Erro ao verificar o Paciente:", error);
     throw error;
 }}
+
+export async function verificaFarmaceutico(idCad){
+    try{
+        const resultVerif =  await connection.query(
+            "select fk_enfermeiro_funcionario_Id_funcionario from enfermeiro where fk_enfermeiro_cadastro_ID = ?",
+            [idCad]
+        );
+        if(resultVerif && resultVerif.length > 0 && resultVerif[0].length > 0){
+            return resultVerif[0][0].fk_enfermeiro_funcionario_Id_funcionario 
+        }
+        return null;
+
+    }catch (error) {
+        console.error("Erro ao verificar o enfermerio:", error);
+        throw error;
+    }
+
+}
+
+export async function verificaRemedioExists(nome){
+    try{
+        const resultVerif =  await connection.query(
+            "select Id_Remedio, Quantidade_Remedio from remedios where Nome_Remedio = ?",
+            [nome]
+        );
+        if(resultVerif && resultVerif.length > 0 && resultVerif[0].length > 0){
+            return resultVerif[0][0]
+        }
+        return null;
+    }catch (error) {
+        console.error("Erro ao verificar o enfermerio:", error);
+        throw error;
+    }
+}
+
+export async function verificaMedico(idCad){
+    try{
+        const resultVerif =  await connection.query(
+            "select fk_medicos_funcionario_Id_funcionario from medicos where fk_medicos_cadastro_ID = ?",
+            [idCad]
+        );
+        if(resultVerif && resultVerif.length > 0 && resultVerif[0].length > 0){
+            return resultVerif[0][0].fk_medicos_funcionario_Id_funcionario 
+        }
+        return null;
+
+    }catch (error) {
+        console.error("Erro ao verificar o enfermerio:", error);
+        throw error;
+    }
+
+}
+
+export async function diminuiRem(idRem){
+    try{
+        const resultVerif =  await connection.query(
+            "select Quantidade_Remedio from remedios where Id_Remedio = ?",
+            [idRem]
+        );
+        if(resultVerif && resultVerif.length > 0 && resultVerif[0].length > 0){
+            const result = resultVerif[0][0].Quantidade_Remedio;
+            const resultFinal = result - 1;
+            const values = [resultFinal, idRem]
+            connection.query(
+                "UPDATE remedios SET Quantidade_Remedio = ? WHERE Id_Remedio = ?", values
+            )
+        }
+
+    }catch (error) {
+        console.error(error);
+        throw error;
+    }
+
+}
