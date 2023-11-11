@@ -15,7 +15,9 @@ const database = new DatabaseSQLProntuario();
 export const cadastraProntuario = async (request, reply) => {
 	try {
 		//verificacao ta cadastrado
-		const authHeader = request.headers.authorization;
+		// const authHeader = request.headers.authorization;
+		const storedCredentials = sessionStorage.getItem('encodedCredentials');
+		console.log(storedCredentials);
 		const authData = Buffer.from(authHeader.split(" ")[1], "base64").toString(
 			"utf-8"
 		);

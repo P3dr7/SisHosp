@@ -9,7 +9,9 @@ import bcrypt from "bcrypt";
 const database = new DatabaseSQL();
 
 export const cadastra = async (request, reply) => {
-	const { email, confEmail, senha, confSenha } = request.body;
+	const dadosRecebidos = request.body;
+	console.log(dadosRecebidos)
+	const { email, confEmail, senha, confSenha } = dadosRecebidos
 	try {
 		const veriEmailExists = await verificaEmailExists(email);
 		const veriEmail = verificaEmail(email, confEmail);

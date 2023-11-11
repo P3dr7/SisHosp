@@ -5,11 +5,11 @@ export class DatabaseSQL {
 	async create(infos) {
 		const idCadastro = GenerateID();
 		// Puxa os dados passado pelo post
-		const {email, senha, funcao} = infos;
+		const {email, senha} = infos;
 		// insere no banco de dados
         const sql = 'INSERT INTO cadastro (ID, email, senha) VALUES (?, ?, ?)';
         const values = [idCadastro, email, senha];
-
+		
 		// Aqui executa a inserção 
 		try {
 			await connection.query(sql, values);

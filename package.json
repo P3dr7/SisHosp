@@ -11,8 +11,10 @@
   "author": "Pedro Ferri",
   "license": "ISC",
   "dependencies": {
+    "@fastify/cors": "^8.4.1",
     "bcrypt": "^5.1.1",
-    "fastify": "^4.24.3",
-    "mysql2": "^3.6.3"
+    "fastify": "^4.0.0",
+    "mysql2": "^3.6.3",
+    "node-persist": "^3.1.3"
   }
 }

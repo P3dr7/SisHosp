@@ -166,3 +166,14 @@ export async function diminuiRem(idRem){
     }
 
 }
+
+export function getCookie(nome) {
+    const cookies = document.cookie.split(';');
+    for (const cookie of cookies) {
+      const [cookieNome, cookieValor] = cookie.trim().split('=');
+      if (cookieNome === nome) {
+        return decodeURIComponent(cookieValor);
+      }
+    }
+    return null;
+  }

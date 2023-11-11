@@ -2,8 +2,9 @@ import { DatabaseSQL } from "../db/funcionario.js";
 import { verificaLogado } from "../config/verificaLogin.js";
 import { DatabaseSQLFarmaceutico } from "../db/farmaceutico.js";
 import { DatabaseSQLMedico } from "../db/medico.js";
-import { verificaEmailExists, verificaFuncExists } from "../config/Verifica.js";
+import { verificaEmailExists, verificaFuncExists, getCookie } from "../config/Verifica.js";
 import { DatabaseSQLEnfermeiro } from "../db/enfermeiro.js";
+
 
 const dbEnfermeiro = new DatabaseSQLEnfermeiro();
 const dbMedico = new DatabaseSQLMedico();
@@ -11,8 +12,8 @@ const dbFarmacia = new DatabaseSQLFarmaceutico();
 const database = new DatabaseSQL();
 
 export const cadastra = async (request, reply) => {
-	const authHeader = request.headers.authorization;
 
+	console.log(authHeader)
 	if (!authHeader) {
 		return reply
 			.status(401)
