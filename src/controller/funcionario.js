@@ -2,7 +2,7 @@ import { DatabaseSQL } from "../db/funcionario.js";
 import { verificaLogado } from "../config/verificaLogin.js";
 import { DatabaseSQLFarmaceutico } from "../db/farmaceutico.js";
 import { DatabaseSQLMedico } from "../db/medico.js";
-import { verificaEmailExists, verificaFuncExists, getCookie } from "../config/Verifica.js";
+import { verificaEmailExists, verificaFuncExists } from "../config/Verifica.js";
 import { DatabaseSQLEnfermeiro } from "../db/enfermeiro.js";
 
 
@@ -12,26 +12,30 @@ const dbFarmacia = new DatabaseSQLFarmaceutico();
 const database = new DatabaseSQL();
 
 export const cadastra = async (request, reply) => {
-
+	if (storedCredentials) {
+	const authHeader = sessionStorage.getItem('userInfo');
 	console.log(authHeader)
 	if (!authHeader) {
 		return reply
 			.status(401)
 			.send({ error: "Credenciais de autenticação não fornecidas" });
 	}
-	// console.log(authHeader)
+	console.log(authHeader)
 	// Decodificar as credenciais em base64
 	const authData = Buffer.from(authHeader.split(" ")[1], "base64").toString(
 		"utf-8"
 	);
 	const [email, senha] = authData.split(":");
-
+	
 	// console.log(email, senha);
 	const idEmail = await verificaEmailExists(email);
 	console.log(idEmail);
+	}
 	try {
 		//puxa os dados do cadastro
-		const { idade, nome, cargo } = request.body;
+		const dadosRecebidos = request.body;
+		console.log(dadosRecebidos)
+		const { idade, nome, cargo } = dadosRecebidos;
 
 		const verLogado = await verificaLogado(email, senha);
 		//Verifica se esta logado

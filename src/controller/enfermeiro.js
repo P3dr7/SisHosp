@@ -3,10 +3,12 @@ import {
 	verificaEmailExists,
 	verificaPacienteExists,
 	verificaProntuario,
+	getIDbyNome
 } from "../config/Verifica.js";
 import { DatabaseSQLProntuario } from "../db/prontuario.js";
 import { DatabaseSQLTem } from "../db/tem.js";
 import { DatabaseSQLPaciente } from "../db/paciente.js";
+import { recuperarDoCache } from "../config/cache.js";
 
 const dbPaciente = new DatabaseSQLPaciente();
 const dbTem = new DatabaseSQLTem();
@@ -14,15 +16,13 @@ const database = new DatabaseSQLProntuario();
 
 export const cadastraProntuario = async (request, reply) => {
 	try {
-		//verificacao ta cadastrado
-		// const authHeader = request.headers.authorization;
-		const storedCredentials = sessionStorage.getItem('encodedCredentials');
-		console.log(storedCredentials);
-		const authData = Buffer.from(authHeader.split(" ")[1], "base64").toString(
-			"utf-8"
-		);
-		const [email, senha] = authData.split(":");
-		// console.log(email)
+		const { Hentrada, HSaida, Receita, Obs, PresPac, nomePac, farmResp } = request.body;
+		
+		const cache = recuperarDoCache();
+		if(!cache){
+			return reply.status(401).send({ error: "Nao esta Logado" });
+		}
+		
 		const idCadstro = await verificaEmailExists(email);
 		// console.log(idCadstro)
 		const verEnf = await verificaEnfermerio(idCadstro);
@@ -31,7 +31,7 @@ export const cadastraProntuario = async (request, reply) => {
 			return reply.status(401).send({ error: "Funcionario nao e enfermeiro" });
 		}
 
-		const { Hentrada, HSaida, Receita, Obs, PresPac, nomePac } = request.body;
+		
 		const verPacExists = await verificaPacienteExists(nomePac);
 		if (!verPacExists) {
 			return reply.status(401).send({ error: "Nao Existe Esse paciente" });
@@ -43,6 +43,7 @@ export const cadastraProntuario = async (request, reply) => {
 			Obs,
 			PresPac,
 			nomePac,
+			farmResp
 		});
 
 		if (verPacExists) {
@@ -62,13 +63,7 @@ export const cadastraProntuario = async (request, reply) => {
 
 export const cadastraPaciente = async (request, reply) => {
 	try {
-		//verificacao se e enfermeiro
-		const authHeader = request.headers.authorization;
-		const authData = Buffer.from(authHeader.split(" ")[1], "base64").toString(
-			"utf-8"
-		);
-		const [email, senha] = authData.split(":");
-		// console.log(email)
+		
 		const idCadstro = await verificaEmailExists(email);
 		// console.log(idCadstro)
 		const verEnf = await verificaEnfermerio(idCadstro);

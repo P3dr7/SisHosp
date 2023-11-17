@@ -112,3 +112,19 @@ CREATE TABLE `app_saude`.`receitas` (
     REFERENCES `app_saude`.`paciente` (`Id_Paciente`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
+    
+CREATE TABLE `app_saude`.`login` (
+  `fk_login_cadastro_ID` BIGINT(255),
+  `fk_login_funcionario_Id_funcionario` BIGINT(255),
+  INDEX `fk_login_cadastro_ID_idx` (`fk_login_cadastro_ID` ASC),
+  INDEX `fk_login_funcionario_Id_funcionario_idx` (`fk_login_funcionario_Id_funcionario` ASC),
+  CONSTRAINT `fk_login_cadastro_ID`
+    FOREIGN KEY (`fk_login_cadastro_ID`)
+    REFERENCES `app_saude`.`cadastro` (`ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_login_funcionario_Id_funcionario`
+    FOREIGN KEY (`fk_login_funcionario_Id_funcionario`)
+    REFERENCES `app_saude`.`funcionario` (`Id_funcionario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);

@@ -38,7 +38,7 @@ export const cadastra = async (request, reply) => {
 			email,
 			senha: senhaHash, // Armazenar a senha criptografada
 		});
-
+		
 		return reply.status(201).send();
 	} catch (error) {
 		console.error("Erro ao criar cadastro:", error);

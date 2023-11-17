@@ -167,13 +167,16 @@ export async function diminuiRem(idRem){
 
 }
 
-export function getCookie(nome) {
-    const cookies = document.cookie.split(';');
-    for (const cookie of cookies) {
-      const [cookieNome, cookieValor] = cookie.trim().split('=');
-      if (cookieNome === nome) {
-        return decodeURIComponent(cookieValor);
-      }
+  export async function getIDbyNome(nome){
+    try{
+        const SearchbyName = await connection.query("SELECT cadastro.ID FROM cadastro JOIN enfermeiro ON cadastro.ID = enfermeiro.fk_enfermeiro_cadastro_ID UNION SELECT cadastro.ID FROM cadastro JOIN enfermeiro ON cadastro.ID = enfermeiro.fk_enfermeiro_cadastro_ID JOIN funcionario ON enfermeiro.fk_enfermeiro_funcionario_Id_funcionario = funcionario.Id_funcionario WHERE funcionario.Nome_Funcionario = ?",
+        [nome]);
+        if(SearchbyName && SearchbyName.length > 0 && SearchbyName[0].length > 0){
+            return SearchbyName[0][0].ID
+        }
+        return null;
+    }catch(error){
+        console.error(error);
+        throw error
     }
-    return null;
   }
