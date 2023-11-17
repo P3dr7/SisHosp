@@ -13,5 +13,4 @@ O código esta divido em pastas, onde a parte de config fica todas as funções 
 Voce se cadastra com seu email e senha, depois faz o login, tem 3 opções, sendo elas **Medicos, Enfermeiros e Farmaceuticos**, onde Medicos faz receitas e altera prontuários, farmacêuticos cuida dos remédios, e enfermeiro cadastra os pacientes e os prontuários
 
 O que falta?
-Colocar os dados do token na variavel global, dar um jeito de puxar os dados em outras classes e fazer a verificacao, depois disso so falta as telas
-      
+As telas de cada um com suas respectivas funcoes

@@ -21,7 +21,8 @@ export async function verificaLogado(request, reply){
         }
 
         const user = rows[0];
-        const id = user.id
+        
+        const id = user.ID
 
         // Comparar a senha fornecida com a senha armazenada
         const senhaCorreta = await bcrypt.compare(senha, user.senha);
@@ -31,12 +32,18 @@ export async function verificaLogado(request, reply){
             return reply.status(400).send('Senha incorreta');
         }
 
-        const token = jwt.sign({id}, 'chave_secreta');
+        let secret = 'chave_secreta'
+
+        const token = jwt.sign({id}, secret, { expiresIn: 600 });
+
+        const dados = { auth: true, token: token }
+        // console.log(dados);
 
         //user-id
-        await setRedis('verificaUser', JSON.stringify(token));
+        await setRedis('verificaUser', JSON.stringify(dados));
         // console.log({token})
-        return reply.send({token})
+        return reply.send({ auth: true, token: token })
+
     } catch (error) {
         console.error('Erro ao verificar o login:', error);
         return reply.status(500).send('Erro interno do servidor');

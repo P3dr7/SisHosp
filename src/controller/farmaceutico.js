@@ -1,25 +1,23 @@
 import { DatabaseSQLRemedios } from "../db/remedios.js";
-import { verificaFarmaceutico, verificaEmailExists } from "../config/Verifica.js";
+import { verificaFarmaceutico, getIDbyNomeFarm} from "../config/Verifica.js";
+import { recuperarDoCache } from "../config/cache.js";
 
 const database = new DatabaseSQLRemedios();
 
 export const createRemedios = async (request, reply)=>{
     try{
-    //verificacao ta cadastrado
-    if (storedCredentials) {
-    const authHeader = sessionStorage.getItem('userInfo');
-    const authData = Buffer.from(authHeader.split(' ')[1], 'base64').toString('utf-8');
-    const [email, senha] = authData.split(':');
-    // console.log(email)
-    const idCadstro = await verificaEmailExists(email);
-    // console.log(idCadstro)
+        const { nome, qnt , farmResp} = request.body;
+        const cache = await recuperarDoCache();
+		if(cache.auth === false || !cache){
+			return reply.status(401).send({ error: "Nao esta Logado" });
+		}
+	const idCadstro = await getIDbyNomeFarm(farmResp)
+
     const verEnf = await verificaFarmaceutico(idCadstro);
     // console.log(verEnf)
     if(!verEnf){
         return reply.status(401).send({ error: "Funcionario nao e enfermeiro" });
     }
-}
-    const { nome, qnt } = request.body;
 
     database.create({
         nome, qnt,

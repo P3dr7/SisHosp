@@ -145,7 +145,7 @@ export async function verificaMedico(idCad){
 
 }
 
-export async function diminuiRem(idRem){
+export async function diminuiRem(idRem, qnt){
     try{
         const resultVerif =  await connection.query(
             "select Quantidade_Remedio from remedios where Id_Remedio = ?",
@@ -153,7 +153,7 @@ export async function diminuiRem(idRem){
         );
         if(resultVerif && resultVerif.length > 0 && resultVerif[0].length > 0){
             const result = resultVerif[0][0].Quantidade_Remedio;
-            const resultFinal = result - 1;
+            const resultFinal = result - qnt;
             const values = [resultFinal, idRem]
             connection.query(
                 "UPDATE remedios SET Quantidade_Remedio = ? WHERE Id_Remedio = ?", values
@@ -167,10 +167,35 @@ export async function diminuiRem(idRem){
 
 }
 
-  export async function getIDbyNome(nome){
+  export async function getIDbyNomeEnf(nome){
     try{
-        const SearchbyName = await connection.query("SELECT cadastro.ID FROM cadastro JOIN enfermeiro ON cadastro.ID = enfermeiro.fk_enfermeiro_cadastro_ID UNION SELECT cadastro.ID FROM cadastro JOIN enfermeiro ON cadastro.ID = enfermeiro.fk_enfermeiro_cadastro_ID JOIN funcionario ON enfermeiro.fk_enfermeiro_funcionario_Id_funcionario = funcionario.Id_funcionario WHERE funcionario.Nome_Funcionario = ?",
+        const SearchbyName = await connection.query("SELECT cadastro.ID FROM cadastro JOIN enfermeiro ON cadastro.ID = enfermeiro.fk_enfermeiro_cadastro_ID JOIN funcionario ON enfermeiro.fk_enfermeiro_funcionario_Id_funcionario = funcionario.Id_funcionario WHERE funcionario.Nome_Funcionario = ?",
         [nome]);
+        if(SearchbyName && SearchbyName.length > 0 && SearchbyName[0].length > 0){
+            return SearchbyName[0][0].ID
+        }
+        return null;
+    }catch(error){
+        console.error(error);
+        throw error
+    }
+  }
+  export async function getIDbyNomeFarm(nome){
+    try{
+        const SearchbyName = await connection.query("SELECT cadastro.ID FROM cadastro JOIN farmaceutico ON cadastro.ID = farmaceutico.fk_cadastro_ID JOIN funcionario ON farmaceutico.fk_funcionario_Id_funcionario = funcionario.Id_funcionario WHERE funcionario.Nome_Funcionario = ?",
+        [nome]);
+        if(SearchbyName && SearchbyName.length > 0 && SearchbyName[0].length > 0){
+            return SearchbyName[0][0].ID
+        }
+        return null;
+    }catch(error){
+        console.error(error);
+        throw error
+    }
+  }
+  export async function getIDbyNomeMed(nome){
+    try{
+        const SearchbyName = await connection.query("SELECT cadastro.ID FROM cadastro JOIN medicos ON cadastro.ID = medicos.fk_medicos_cadastro_ID JOIN funcionario ON medicos.fk_medicos_funcionario_Id_funcionario = funcionario.Id_funcionario WHERE funcionario.Nome_Funcionario = ?", [nome]);
         if(SearchbyName && SearchbyName.length > 0 && SearchbyName[0].length > 0){
             return SearchbyName[0][0].ID
         }

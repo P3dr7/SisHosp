@@ -4,6 +4,7 @@ import * as enfermeiro from "./controller/enfermeiro.js";
 import * as farmaceutico from "./controller/farmaceutico.js";
 import * as medicos from "./controller/medico.js"
 import { verificaLogado } from "./config/verificaLogin.js";
+import { recuperarDoCache } from "./config/cache.js";
 
 export default function (fastify, options, done) {
 	// Registrar rotas individualmente
@@ -16,6 +17,7 @@ export default function (fastify, options, done) {
 	fastify.post("/receitas", medicos.createReceita)
 	fastify.post("/verificaLogin", verificaLogado)
 	fastify.get("/verificaLogin", verificaLogado)
+	fastify.get("/teste", recuperarDoCache)
 
 	done();
 }

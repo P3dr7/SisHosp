@@ -3,7 +3,7 @@ import {
 	verificaEmailExists,
 	verificaPacienteExists,
 	verificaProntuario,
-	getIDbyNome
+	getIDbyNomeEnf
 } from "../config/Verifica.js";
 import { DatabaseSQLProntuario } from "../db/prontuario.js";
 import { DatabaseSQLTem } from "../db/tem.js";
@@ -16,15 +16,16 @@ const database = new DatabaseSQLProntuario();
 
 export const cadastraProntuario = async (request, reply) => {
 	try {
-		const { Hentrada, HSaida, Receita, Obs, PresPac, nomePac, farmResp } = request.body;
+		const { Hentrada, HSaida, Receita, Obs, PresPac, nomePac, enfResp } = request.body;
 		
-		const cache = recuperarDoCache();
-		if(!cache){
+		const cache = await recuperarDoCache();
+		if(cache.auth === false || !cache){
 			return reply.status(401).send({ error: "Nao esta Logado" });
 		}
 		
-		const idCadstro = await verificaEmailExists(email);
-		// console.log(idCadstro)
+		
+		const idCadstro = await getIDbyNomeEnf(enfResp);
+
 		const verEnf = await verificaEnfermerio(idCadstro);
 		// console.log(verEnf)
 		if (!verEnf) {
@@ -63,8 +64,11 @@ export const cadastraProntuario = async (request, reply) => {
 
 export const cadastraPaciente = async (request, reply) => {
 	try {
-		
-		const idCadstro = await verificaEmailExists(email);
+		const cache = recuperarDoCache();
+		if(cache.auth = false || !cache){
+			return reply.status(401).send({ error: "Nao esta Logado" });
+		}
+		const idCadstro = cache.userId;
 		// console.log(idCadstro)
 		const verEnf = await verificaEnfermerio(idCadstro);
 		// console.log(verEnf)
