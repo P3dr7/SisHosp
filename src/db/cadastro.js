@@ -6,9 +6,10 @@ export class DatabaseSQL {
 		const idCadastro = GenerateID();
 		// Puxa os dados passado pelo post
 		const {email, senha} = infos;
+		let veri = 0;
 		// insere no banco de dados
-        const sql = 'INSERT INTO cadastro (ID, email, senha) VALUES (?, ?, ?)';
-        const values = [idCadastro, email, senha];
+        const sql = 'INSERT INTO cadastro (ID, email, senha, verificacao) VALUES (?, ?, ?, ?)';
+        const values = [idCadastro, email, senha, veri];
 		
 		// Aqui executa a inserção 
 		try {

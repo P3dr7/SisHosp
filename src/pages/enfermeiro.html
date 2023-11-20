@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>Formulário de Cadastro</title>
+    <link href="./css/style.css" rel="stylesheet">
+</head>
+<body class="d-flex align-items-center py-4 bg-body-tertiary">
+    <main class="w-100 m-auto form-container">
+        <form action="/" method="POST">
+            <h1 class="h3 d-flex justify-content-center align-items-center mb-3 fw-normal">Cadastro Prontuario</h1>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="nomePac" placeholder="Nome do Paciente" name="nomePac">
+                <label for="nomePac">Nome do Paciente</label>
+            </div>
+            <div class="form-floating">
+                <input type="datetime-local" class="form-control" id="Hentrada" name="Hentrada">
+                <label for="Hentrada">Horário de Entrada</label>
+            </div>
+            <div class="form-floating">
+                <input type="datetime-local" class="form-control" id="HSaida" name="HSaida">
+                <label for="HSaida">Horário de Saída</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="Receita" placeholder="Receita Médica" name="Receita">
+                <label for="Receita">Receita Médica</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="Obs" placeholder="Observações" name="Obs">
+                <label for="Obs">Observações</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="PresPac" placeholder="Prescrição do Paciente" name="PresPac">
+                <label for="PresPac">Prescrição do Paciente</label>
+            </div>
+            <button class="btn btn-outline-primary w-100 py-2" onclick="validarForm(event)">Cadastrar</button>
+        </form>
+    </main>
+    <script>
+        async function validarForm(event) {
+            event.preventDefault();
+
+            var nomePac = document.getElementById("nomePac").value;
+            var Hentrada = document.getElementById("Hentrada").value;
+            var HSaida = document.getElementById("HSaida").value;
+            var Receita = document.getElementById("Receita").value;
+            var Obs = document.getElementById("Obs").value;
+            var PresPac = document.getElementById("PresPac").value;
+
+            const dados = {
+                nomePac,
+                Hentrada,
+                HSaida,
+                Receita,
+                Obs,
+                PresPac
+            };
+
+            try {
+                const response = await fetch('http://127.0.0.1:3333/enfermeiro', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dados),
+                });
+
+                if (response.status === 201) {
+                    // Redirecione para outra página
+                    window.location.href = 'funcionario.html';
+                } else if (response.status === 400) {
+                    // Exiba um aviso de que os dados são divergentes
+                    alert('Os dados são divergentes. Por favor, verifique suas credenciais.');
+                } else {
+                    throw new Error('Erro na solicitação da API');
+                }
+            } catch (error) {
+                console.error('Erro ao enviar dados para a API:', error);
+                // Manipule o erro de maneira apropriada (exibir mensagem para o usuário, etc.)
+            }
+        }
+    </script>
+</body>
+</html>
