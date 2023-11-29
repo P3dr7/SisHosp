@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pacientes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f8f9fa; /* cor de fundo do estilo que você enviou */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .tabs {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin-bottom: 10px;
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 1;
+        }
+
+        .tab {
+            cursor: pointer;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            margin-right: 10px;
+            border: 1px solid #007bff;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .tab-content {
+            border: 1px solid #007bff;
+            padding: 20px;
+            display: none;
+            border-radius: 0 0 5px 5px;
+            width: 100%;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .update-button {
+            margin-top: 10px;
+            background-color: #28a745;
+            color: #fff;
+            padding: 8px;
+            border: 1px solid #28a745;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Pacientes</h1>
+        
+        <ul class="tabs" id="pacientesTabs"></ul>
+        <div class="tab-contents" id="pacientesTabsContent"></div>
+        <button class="back-button" onclick="voltar()">Voltar</button>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('http://127.0.0.1:3333/getPaci')
+                .then(response => response.json())
+                .then(data => criarAbasEProntuarios(data))
+                .catch(error => console.error('Erro ao obter dados:', error));
+        });
+
+        function voltar() {
+            // Adicione aqui o redirecionamento para outra página HTML
+            window.location.href = 'outra_pagina.html';
+        }
+
+        function atualizarProntuario() {
+            // Adicione aqui a lógica para atualizar o prontuário
+            alert('Prontuário atualizado!');
+        }
+
+        function criarAbasEProntuarios(data) {
+            const pacientesTabs = document.getElementById('pacientesTabs');
+            const pacientesTabsContent = document.getElementById('pacientesTabsContent');
+
+            data.forEach(paciente => {
+                // Criar aba
+                const tabId = `tab${paciente.Nome_Paciente.replace(/\s+/g, '')}`;
+                const tab = document.createElement('li');
+                tab.classList.add('tab');
+                tab.textContent = paciente.Nome_Paciente;
+                tab.dataset.tabId = tabId;
+                tab.addEventListener('click', () => exibirProntuarios(tabId));
+
+                pacientesTabs.appendChild(tab);
+
+                // Criar conteúdo da aba
+                const tabContent = document.createElement('div');
+                tabContent.classList.add('tab-content');
+                tabContent.id = tabId;
+
+                paciente.prontuarios.forEach(prontuario => {
+                    tabContent.innerHTML += `
+                        <p>ID Prontuário: ${prontuario.Id_Prontuario}</p>
+                        <p>Horário de Entrada: ${new Date(prontuario.Horario_Entrada).toLocaleString()}</p>
+                        <p>Horário de Saída: ${new Date(prontuario.Horario_Saida).toLocaleString()}</p>
+                        <p>Receita: ${prontuario.Receita}</p>
+                        <p>Observações: ${prontuario.Observacoes}</p>
+                        <p>Pressão do Paciente: ${prontuario.Pressao_Paciente}</p>
+                        <p>Farmacêutico Responsável: ${prontuario.farm_resp || 'Não especificado'}</p>
+                        <hr>
+                    `;
+                });
+
+                pacientesTabsContent.appendChild(tabContent);
+            });
+
+            // Ativar a primeira aba
+            pacientesTabs.querySelector('.tab').classList.add('active');
+            pacientesTabsContent.querySelector('.tab-content').classList.add('active');
+        }
+
+        function exibirProntuarios(tabId) {
+            const allTabs = document.querySelectorAll('.tab');
+            const allTabContents = document.querySelectorAll('.tab-content');
+
+            allTabs.forEach(tab => tab.classList.remove('active'));
+            allTabContents.forEach(content => content.classList.remove('active'));
+
+            const selectedTab = document.querySelector(`[data-tab-id="${tabId}"]`);
+            const selectedTabContent = document.getElementById(tabId);
+
+            selectedTab.classList.add('active');
+            selectedTabContent.classList.add('active');
+        }
+    </script>
+</body>
+</html>

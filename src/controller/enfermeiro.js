@@ -1,9 +1,8 @@
 import {
 	verificaEnfermerio,
-	verificaEmailExists,
 	verificaPacienteExists,
 	verificaProntuario,
-	getIDbyNomeEnf
+	getNameById
 } from "../config/Verifica.js";
 import { DatabaseSQLProntuario } from "../db/prontuario.js";
 import { DatabaseSQLTem } from "../db/tem.js";
@@ -16,26 +15,26 @@ const database = new DatabaseSQLProntuario();
 
 export const cadastraProntuario = async (request, reply) => {
 	try {
-		const { Hentrada, HSaida, Receita, Obs, PresPac, nomePac, enfResp } = request.body;
-		
+		const { Hentrada, HSaida, Receita, Obs, PresPac, nomePac } = request.body;
+
 		const cache = await recuperarDoCache();
 		if(cache.auth === false || !cache){
-			return reply.status(401).send({ error: "Nao esta Logado" });
+			return reply.status(401).send({ auth:false, error: "Nao esta Logado" });
 		}
-		
-		
-		const idCadstro = await getIDbyNomeEnf(enfResp);
-
+		const auth = cache.auth
+		const idCadstro = cache.userId
+		// console.log(cache)
 		const verEnf = await verificaEnfermerio(idCadstro);
-		// console.log(verEnf)
+		
 		if (!verEnf) {
-			return reply.status(401).send({ error: "Funcionario nao e enfermeiro" });
+			return reply.status(401).send({ auth, error: "Funcionario nao e enfermeiro" });
 		}
 
-		
+		const enfResp = await getNameById(verEnf)
+		// console.log(enfResp)
 		const verPacExists = await verificaPacienteExists(nomePac);
 		if (!verPacExists) {
-			return reply.status(401).send({ error: "Nao Existe Esse paciente" });
+			return reply.status(401).send({ auth, error: "Nao Existe Esse paciente" });
 		}
 		database.create({
 			Hentrada,
@@ -44,8 +43,9 @@ export const cadastraProntuario = async (request, reply) => {
 			Obs,
 			PresPac,
 			nomePac,
-			farmResp
+			enfResp
 		});
+		
 
 		if (verPacExists) {
 			const idPront = await verificaProntuario(Hentrada);
@@ -54,6 +54,8 @@ export const cadastraProntuario = async (request, reply) => {
 				idPaciente: verPacExists,
 			});
 		}
+		return reply.status(401).send({ auth, "mensage":"Prontuario cadastrado com sucesso" });
+
 	} catch (error) {
 		console.error("Erro ao criar protocolo:", error);
 		return reply

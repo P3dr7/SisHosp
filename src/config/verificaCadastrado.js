@@ -7,7 +7,7 @@ export async function veriCadastrado(request, reply){
 
     const result = await connection.query("SELECT verificacao FROM cadastro WHERE ID = ?", [idCadastro]);
 
-    console.log(result[0]);
+    // console.log(result[0]);
 
     if (result[0] === "[]") {
         return reply.send('Usuário não encontrado');

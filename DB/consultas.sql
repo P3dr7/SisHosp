@@ -43,4 +43,6 @@ JOIN medicos ON cadastro.ID = medicos.fk_medicos_cadastro_ID
 JOIN funcionario ON medicos.fk_medicos_funcionario_Id_funcionario = funcionario.Id_funcionario
 WHERE funcionario.Nome_Funcionario = 'Pedro He';
 
-select cadastro.ID from cadastro where email = "Pedro@gmail.com"
+select cadastro.ID from cadastro where email = "Pedro@gmail.com";
+
+select verificacao from cadastro where ID = "175295524527288300";

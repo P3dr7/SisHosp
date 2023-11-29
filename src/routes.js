@@ -17,9 +17,12 @@ export default function (fastify, options, done) {
 	fastify.post("/farmaceutico", farmaceutico.createRemedios);
 	fastify.post("/receitas", medicos.createReceita)
 	fastify.post("/verificaLogin", verificaLogado)
+	fastify.post("/removeRem", farmaceutico.deleteRemedios)
+
 	fastify.get("/verificaLogin", verificaLogado)
 	fastify.get("/teste", recuperarDoCache)
 	fastify.get("/verificaCadastro", veriCadastrado)
+	fastify.get("/getPaci", medicos.getPac)
 
 	done();
 }

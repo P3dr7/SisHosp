@@ -14,3 +14,5 @@ Voce se cadastra com seu email e senha, depois faz o login, tem 3 opções, send
 
 O que falta?
 As telas de cada um com suas respectivas funcoes
+
+Enfermerio cadastra paciente, depois faz o prontuario dele 

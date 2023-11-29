@@ -96,11 +96,11 @@ export async function verificaProntuario(HEntrada){
 export async function verificaFarmaceutico(idCad){
     try{
         const resultVerif =  await connection.query(
-            "select fk_enfermeiro_funcionario_Id_funcionario from enfermeiro where fk_enfermeiro_cadastro_ID = ?",
+            "select fk_funcionario_Id_funcionario from farmaceutico where fk_cadastro_ID = ?",
             [idCad]
         );
         if(resultVerif && resultVerif.length > 0 && resultVerif[0].length > 0){
-            return resultVerif[0][0].fk_enfermeiro_funcionario_Id_funcionario 
+            return resultVerif[0][0].fk_funcionario_Id_funcionario 
         }
         return null;
 
@@ -198,6 +198,19 @@ export async function diminuiRem(idRem, qnt){
         const SearchbyName = await connection.query("SELECT cadastro.ID FROM cadastro JOIN medicos ON cadastro.ID = medicos.fk_medicos_cadastro_ID JOIN funcionario ON medicos.fk_medicos_funcionario_Id_funcionario = funcionario.Id_funcionario WHERE funcionario.Nome_Funcionario = ?", [nome]);
         if(SearchbyName && SearchbyName.length > 0 && SearchbyName[0].length > 0){
             return SearchbyName[0][0].ID
+        }
+        return null;
+    }catch(error){
+        console.error(error);
+        throw error
+    }
+  }
+
+  export async function getNameById(id){
+    try{
+        const getName = await connection.query("select Nome_Funcionario from funcionario where Id_Funcionario = ?", id)   
+        if(getName && getName.length > 0 && getName[0].length > 0){
+            return getName[0][0].Nome_Funcionario
         }
         return null;
     }catch(error){

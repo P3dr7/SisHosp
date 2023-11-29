@@ -5,7 +5,7 @@ import { GenerateID } from '../config/ID.js';
 export class DatabaseSQLProntuario {
 	async create(infos) {
 		// Puxa os dados passado pelo post
-		const {Hentrada, HSaida, Receita, Obs, PresPac, nomePac, farmResp} = infos;
+		const {Hentrada, HSaida, Receita, Obs, PresPac, nomePac, enfResp} = infos;
 
         //cria um id 
         const prontID = GenerateID();
@@ -13,7 +13,7 @@ export class DatabaseSQLProntuario {
 
 		// insere no banco de dados
         const sql = 'INSERT INTO prontuario (Id_Prontuario, Horario_Entrada, Horario_Saida, Receita, Observacoes, Pressao_Paciente, paciente, farm_resp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-        const values = [prontID, Hentrada, HSaida, Receita, Obs, PresPac,nomePac, farmResp];
+        const values = [prontID, Hentrada, HSaida, Receita, Obs, PresPac,nomePac, enfResp];
 
 		// Aqui executa a inserção 
 		try {

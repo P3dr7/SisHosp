@@ -25,4 +25,18 @@ export class DatabaseSQLRemedios {
 			console.error("Erro ao interagir com o banco de dados:", error);
 		}
 	}
+
+	async remove(values) {
+		try {
+			const { qnt, idRemedio, qntRem } = values
+			console.log(values)
+			const sqlUpdate =
+					"UPDATE remedios SET Quantidade_Remedio = ? WHERE Id_Remedio = ?";
+				const somaFinal =  qntRem - parseInt(qnt);
+				await connection.query(sqlUpdate, [somaFinal, idRemedio]);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	}
 }

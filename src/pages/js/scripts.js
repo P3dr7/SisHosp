@@ -24,10 +24,10 @@ function validarForm(event) {
 			console.log('Dados do backend:', dadosRecebidos);
 
 			// Continua com o restante do código, se necessário
-			if (response.status === 200) {
+			if (dadosRecebidos.auth) {
 				// Redirecione para outra página
 				window.location.href = "cargos.html";
-			} else if (response.status === 400) {
+			} else if (!dadosRecebidos.auth) {
 				// Exiba um aviso de que os dados são divergentes
 				alert("Os dados são divergentes. Por favor, verifique suas credenciais.");
 			} else {

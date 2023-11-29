@@ -20,4 +20,22 @@ export class DatabaseSQLPaciente{
 		}
 		
     };
+
+	async getPacientes(){
+		try{
+			const data = await connection.query('select * from paciente')
+			return (data[0]);
+		}catch (error) {
+			console.error("Erro ao inserir no banco de dados:", error);
+		}
+	}
+	
+	async getProntuarios(){
+		try{
+			const data = await connection.query('select * from prontuario')
+			return (data[0]);
+		}catch (error) {
+			console.error("Erro ao inserir no banco de dados:", error);
+		}
+	}
 }

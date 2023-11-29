@@ -34,7 +34,7 @@ export async function verificaLogado(request, reply){
 
         let secret = 'chave_secreta'
 
-        const token = jwt.sign({id}, secret, { expiresIn: 600 });
+        const token = jwt.sign({id}, secret, { expiresIn: 1800 });
 
         const dados = { auth: true, token: token }
         // console.log(dados);

@@ -12,7 +12,7 @@
     <main class="w-100 m-auto form-container">
         <form action="/" method="POST">
             <div class="mb-3"></div> <!-- Espaço extra -->
-            <h1 class="h3 d-flex justify-content-center align-items-center mb-3 fw-normal">Cadastro de Medicamento</h1>
+            <h1 class="h3 d-flex justify-content-center align-items-center mb-3 fw-normal">Retirada de Medicamento</h1>
             <div class="form-floating p2">
                 <input type="text" class="form-control" id="nomeMedicamento" placeholder="Nome do Medicamento" name="nomeMedicamento">
                 <label for="nomeMedicamento">Nome do Medicamento</label>
@@ -45,7 +45,7 @@
             };
 
             try {
-                const response = await fetch('http://127.0.0.1:3333/farmaceutico', {
+                const response = await fetch('http://127.0.0.1:3333/removeRem', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
