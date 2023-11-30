@@ -13,6 +13,5 @@ O código esta divido em pastas, onde a parte de config fica todas as funções 
 Voce se cadastra com seu email e senha, depois faz o login, tem 3 opções, sendo elas **Medicos, Enfermeiros e Farmaceuticos**, onde Medicos faz receitas e altera prontuários, farmacêuticos cuida dos remédios, e enfermeiro cadastra os pacientes e os prontuários
 
 O que falta?
-As telas de cada um com suas respectivas funcoes
-
-Enfermerio cadastra paciente, depois faz o prontuario dele 
+fazer api para recuperar os dados seguinte o id
+fazer api para atualizar os dados do banco de dados

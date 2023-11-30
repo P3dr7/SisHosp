@@ -7,10 +7,10 @@ import { verificaLogado } from "./config/verificaLogin.js";
 import { recuperarDoCache } from "./config/cache.js";
 import { veriCadastrado } from "./config/verificaCadastrado.js";
 
-export default function (fastify, options, done) {
-	// Registrar rotas individualmente
-	fastify.post("/cadastro", cadastro.cadastra);
 
+export default function (fastify, options, done) {
+	// POST
+	fastify.post("/cadastro", cadastro.cadastra);
 	fastify.post("/funcionario", funcionario.cadastra);
 	fastify.post("/paciente", enfermeiro.cadastraPaciente);
 	fastify.post("/prontuario", enfermeiro.cadastraProntuario);
@@ -18,11 +18,19 @@ export default function (fastify, options, done) {
 	fastify.post("/receitas", medicos.createReceita)
 	fastify.post("/verificaLogin", verificaLogado)
 	fastify.post("/removeRem", farmaceutico.deleteRemedios)
+	fastify.post("/getPront", enfermeiro.recuperaPaciente)
 
+	// GET
 	fastify.get("/verificaLogin", verificaLogado)
 	fastify.get("/teste", recuperarDoCache)
 	fastify.get("/verificaCadastro", veriCadastrado)
 	fastify.get("/getPaci", medicos.getPac)
+	
+	// PUT
+	fastify.post("/atualizaPaciente", enfermeiro.atualizaPaciente)
+
+	//DELETE
+	fastify.delete("/deletePronturio", enfermeiro.deleteProntuario)
 
 	done();
 }

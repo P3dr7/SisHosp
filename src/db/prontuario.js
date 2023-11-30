@@ -24,4 +24,18 @@ export class DatabaseSQLProntuario {
 		}
 		
     };
+
+	async update(infos){
+		const {Hentrada, HSaida, Receita, Obs, PresPac, nomePac, enfResp} = infos;
+	}
+	
+	async delete(idPront){
+		const sql = "delete from prontuario where Id_Prontuario = ?"
+		try{
+			await connection.query(sql, idPront)
+		}catch (error) {
+			console.error("Erro ao excluir do banco de dados:", error);
+		}
+		
+	}
 }

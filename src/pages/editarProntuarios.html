@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Editar Prontuário</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f8f9fa;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .form-container {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+        }
+
+        button {
+            width: 100%;
+            background-color: #28a745;
+            color: #fff;
+            padding: 10px;
+            border: 1px solid #28a745;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Editar Prontuário</h1>
+        <button class="back-button" onclick="voltar()">Voltar</button>
+
+        <div class="form-container" id="formContainer"></div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Extrair o ID do prontuário da URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const idProntuario = urlParams.get('id');
+            const nomePac = urlParams.get('nome');
+            // console.log(nomePac)
+            if (idProntuario) {
+                // Se o ID do prontuário estiver presente, fazer solicitação à API
+                fetch('http://127.0.0.1:3333/getPront', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id: idProntuario }), // Enviar ID no corpo da solicitação
+                })
+                .then(response => response.json())
+                .then(data => {
+                    preencherFormulario(data, nomePac);
+                })
+                .catch(error => console.error('Erro ao obter dados do prontuário:', error));
+            }
+        
+            // Adicionar evento de envio do formulário
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function (event) {
+                event.preventDefault(); // Evitar o comportamento padrão de envio do formulário
+                atualizarProntuario(idProntuario, nomePac);
+            });
+        });
+        
+        function voltar() {
+            // Adicione aqui o redirecionamento para outra página HTML
+            window.location.href = 'cargos.html';
+        }
+        
+        function preencherFormulario(prontuario, nomePac) {
+            const formContainer = document.getElementById('formContainer');
+
+            // Criar formulário
+            const form = document.createElement('form');
+
+            // Adicionar nome do paciente (não editável)
+            form.appendChild(criarInput('Nome_Paciente', 'Nome do Paciente', nomePac, true));
+
+            // Função para formatar a data e hora
+            const formatarDataHora = (dataHoraString) => {
+                const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZone: 'UTC' };
+                const dataHora = new Date(dataHoraString);
+                return dataHora.toLocaleString('pt-BR', options);
+            };
+
+            // Adicionar campos ao formulário
+            form.appendChild(criarInput('Id_Prontuario', 'ID do Prontuário', prontuario.Id_Prontuario, true));
+            form.appendChild(criarInput('Horario_Entrada', 'Horário de Entrada', formatarDataHora(prontuario.Horario_Entrada)));
+            form.appendChild(criarInput('Horario_Saida', 'Horário de Saída', formatarDataHora(prontuario.Horario_Saida)));
+            form.appendChild(criarInput('Receita', 'Receita', prontuario.Receita));
+            form.appendChild(criarInput('Observacoes', 'Observações', prontuario.Observacoes, true));
+            form.appendChild(criarInput('Pressao_Paciente', 'Pressão do Paciente', prontuario.Pressao_Paciente));
+            form.appendChild(criarInput('farm_resp', 'Farmacêutico Responsável', prontuario.farm_resp));
+
+            // Adicionar botão de atualizar
+            const atualizarButton = document.createElement('button');
+            atualizarButton.textContent = 'Atualizar Prontuário';
+            atualizarButton.addEventListener('click', () => atualizarProntuario(prontuario.Id_Prontuario, nomePac));
+            form.appendChild(atualizarButton);
+
+            // Limpar o conteúdo anterior do formContainer
+            formContainer.innerHTML = '';
+
+            // Adicionar formulário ao formContainer
+            formContainer.appendChild(form);
+        }
+        
+        function criarInput(name, label, value, readonly = false) {
+            const inputContainer = document.createElement('div');
+            const inputLabel = document.createElement('label');
+            inputLabel.textContent = label;
+        
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = name;
+            input.value = value;
+            input.readOnly = readonly;
+        
+            inputContainer.appendChild(inputLabel);
+            inputContainer.appendChild(input);
+        
+            return inputContainer;
+        }
+        
+        function atualizarProntuario(idProntuario, nomePac) {
+            // Obter os dados do formulário
+            const formData = new FormData(document.querySelector('form'));
+            console.logi(idProntuario)
+            console.log(nomePac)
+            // Converter FormData para objeto JSON
+            const jsonData = {};
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+        
+            // Adicionar o ID do prontuário aos dados
+            jsonData.Id_Prontuario = idProntuario;
+        
+            // Adicionar o nome do paciente aos dados
+            jsonData.NomePac = nomePac;
+        
+            // Exibir o JSON no console
+            console.log(jsonData);
+        
+            // Fazer solicitação à API para atualizar o prontuário
+            fetch(`http://127.0.0.1:3333/atualizaPaciente`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(jsonData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => console.error('Erro ao fazer solicitação de atualização:', error));
+        }
+    </script>
+</body>
+</html>

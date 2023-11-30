@@ -21,7 +21,7 @@ export const cadastra = async (request, reply) => {
 		const idEmail = cache.userId;
 		//puxa os dados do cadastro
 		const dadosRecebidos = request.body;
-		console.log(dadosRecebidos)
+		
 		const { idade, nome, cargo } = dadosRecebidos;
 
 		//Verifica se esta logado

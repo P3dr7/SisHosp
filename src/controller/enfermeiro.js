@@ -2,7 +2,8 @@ import {
 	verificaEnfermerio,
 	verificaPacienteExists,
 	verificaProntuario,
-	getNameById
+	getNameById,
+	getProntuarioById
 } from "../config/Verifica.js";
 import { DatabaseSQLProntuario } from "../db/prontuario.js";
 import { DatabaseSQLTem } from "../db/tem.js";
@@ -96,3 +97,47 @@ export const cadastraPaciente = async (request, reply) => {
 			.send({ error: "Ocorreu um erro interno do servidor." });
 	}
 };
+export const recuperaPaciente = async (request, reply) => {
+	try {
+		const id = request.body.id
+		
+		const data = await getProntuarioById(id)
+	
+		reply.send(data)
+	}catch (error) {
+		console.error("Erro ao atualizar paciente:", error);
+		return reply
+			.status(500)
+			.send({ error: "Ocorreu um erro interno do servidor." });
+	}
+};
+
+export const atualizaPaciente = async(request, reply) => {
+	try{
+	const dadosRecebidos = request.body
+	console.log(dadosRecebidos)
+	const { IdPront, HEntrada, HSaida, Receita, Obs, Pressao, farmResp } = dadosRecebidos
+	
+	reply.send(dadosRecebidos)
+	}catch (error) {
+		console.error("Erro ao atualizar paciente:", error);
+		return reply
+			.status(500)
+			.send({ error: "Ocorreu um erro interno do servidor." });
+	}
+}
+
+export const deleteProntuario = async(request, reply) =>{
+	try{
+		const id = request.body
+		console.log(id)
+		database.delete(id)
+	reply.status(200).send(OK)
+	}catch (error) {
+		console.error("Erro ao atualizar paciente:", error);
+		return reply
+			.status(500)
+			.send({ error: "Ocorreu um erro interno do servidor." });
+	}
+}
+

@@ -218,3 +218,16 @@ export async function diminuiRem(idRem, qnt){
         throw error
     }
   }
+
+  export async function getProntuarioById(id){
+    try{
+        const getPront = await connection.query("select Id_Prontuario, Horario_Entrada, Horario_Saida, Receita, Observacoes, Pressao_Paciente, farm_resp from prontuario where Id_Prontuario = ?", id)   
+        if(getPront && getPront.length > 0 && getPront[0].length > 0){
+            return getPront[0][0]
+        }
+        return null;
+    }catch(error){
+        console.error(error);
+        throw error
+    }
+  }
