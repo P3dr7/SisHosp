@@ -12,6 +12,5 @@ O código esta divido em pastas, onde a parte de config fica todas as funções 
 ### Explicação  
 Voce se cadastra com seu email e senha, depois faz o login, tem 3 opções, sendo elas **Medicos, Enfermeiros e Farmaceuticos**, onde Medicos faz receitas e altera prontuários, farmacêuticos cuida dos remédios, e enfermeiro cadastra os pacientes e os prontuários
 
-O que falta?
-fazer api para recuperar os dados seguinte o id
-fazer api para atualizar os dados do banco de dados
+## O que Falta?
+Verificação das funções de cada um dos cargos 
