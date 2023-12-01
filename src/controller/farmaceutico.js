@@ -12,6 +12,7 @@ export const createRemedios = async (request, reply)=>{
 	if(cache.auth === false || !cache){
 		return reply.status(401).send({ error: "Nao esta Logado" });
 	}
+    const auth = cache.auth
 	const idCadstro = await getIDbyNomeFarm(farmResp)
     // console.log(idCadstro)
     const verEnf = await verificaFarmaceutico(idCadstro);
@@ -24,7 +25,7 @@ export const createRemedios = async (request, reply)=>{
         nome, qnt,
     })
 
-    return reply.status(201)
+    return reply.status(201).send({"auth": auth})
     } catch (error) {
         console.error("Erro ao passar remedios:", error);
         return reply

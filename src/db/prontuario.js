@@ -26,9 +26,25 @@ export class DatabaseSQLProntuario {
     };
 
 	async update(infos){
-		const {Hentrada, HSaida, Receita, Obs, PresPac, nomePac, enfResp} = infos;
+		const {Id_Prontuario, NomePac, Hentrada, HSaida, Receita, Obs, Pressao, farmResp} = infos;
+		console.log(infos)
+		console.log(Id_Prontuario)
+		console.log(Hentrada)
+		console.log(HSaida)
+		console.log(Receita)
+		console.log(Obs)
+		console.log(Pressao)
+		console.log(NomePac)
+		console.log(farmResp)
+		const sql = "UPDATE prontuario SET Horario_Entrada = ?, Horario_Saida = ?, Receita = ?, Observacoes = ?, Pressao_Paciente = ?, farm_resp = ? WHERE Id_Prontuario = ?  AND paciente = ?"
+		const values = [Hentrada, HSaida, Receita, Obs, Pressao, farmResp, Id_Prontuario, NomePac]
+		try{
+			await connection.query(sql, values);
+		}catch (error) {
+			console.error("Erro ao atualizar dados do banco de dados:", error);
+		}
 	}
-	
+
 	async delete(idPront){
 		const sql = "delete from prontuario where Id_Prontuario = ?"
 		try{

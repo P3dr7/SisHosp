@@ -27,6 +27,7 @@
                 <label for="farmResp">Farmaceutico Responsavel</label>
             </div>
             <button class="btn btn-outline-primary w-100 py-2" onclick="validarForm(event)">Cadastrar Medicamento</button>
+            <a href="escolhaFarmaceutico.html" class="btn btn-outline-danger w-100 p-3 mt-2">Voltar</a>
         </form>
     </main>
     <script>
@@ -64,7 +65,7 @@
                     window.location.href = "escolhaFarmaceutico.html";
                 } else if (!dadosRecebidos.auth) {
                     // Exiba um aviso de que os dados são divergentes
-                    alert("Os dados são divergentes. Por favor, verifique suas credenciais.");
+                    alert(dadosRecebidos.error);
                 } else {
                     throw new Error("Erro na solicitação da API");
                 }

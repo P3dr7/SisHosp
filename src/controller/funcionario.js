@@ -1,10 +1,10 @@
 import { DatabaseSQL } from "../db/funcionario.js";
-import { recuperarDoCache } from "../config/cache.js";
+import { recuperarEmailDoCache } from "../config/cache.js";
 import { DatabaseSQLFarmaceutico } from "../db/farmaceutico.js";
 import { DatabaseSQLMedico } from "../db/medico.js";
 import { verificaFuncExists } from "../config/Verifica.js";
 import { DatabaseSQLEnfermeiro } from "../db/enfermeiro.js";
-
+import { verificaEmailExists } from "../config/Verifica.js";
 
 const dbEnfermeiro = new DatabaseSQLEnfermeiro();
 const dbMedico = new DatabaseSQLMedico();
@@ -14,11 +14,15 @@ const database = new DatabaseSQL();
 export const cadastra = async (request, reply) => {
 	
 	try {
-		const cache = await recuperarDoCache();
+		const cache = await recuperarEmailDoCache();
 		if(cache.auth === false || !cache){
 			return reply.status(401).send({ error: "Nao esta Logado" });
 		}
-		const idEmail = cache.userId;
+		const Email = cache.userEmail;
+		console.log(cache)
+		console.log(Email)
+		const idEmail = await verificaEmailExists(Email)
+		console.log(idEmail)
 		//puxa os dados do cadastro
 		const dadosRecebidos = request.body;
 		

@@ -9,7 +9,7 @@ export async function verificaLogado(request, reply){
         console.log('Dados recebidos do cliente:', dadosRecebidos);
         
         const { email, senha } = dadosRecebidos;
-        console.log(email);
+        // console.log(email);
 
         // Buscar o usuário no banco de dados
         const [rows] = await connection.query ('SELECT * FROM cadastro WHERE email = ?', [email]);
@@ -41,6 +41,7 @@ export async function verificaLogado(request, reply){
 
         //user-id
         await setRedis('verificaUser', JSON.stringify(dados));
+        console.log(dados)
         // console.log({token})
         return reply.send({ auth: true, token: token })
 

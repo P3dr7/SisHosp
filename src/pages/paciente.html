@@ -48,12 +48,12 @@
                     // Atualiza a variável dadosRecebidos com os dados do backend
                     dadosRecebidos = data;
                     console.log('Dados do backend:', dadosRecebidos);
-
+                    
                     // Continua com o restante do código, se necessário
-                    if (dadosRecebidos.auth) {
+                    if (dadosRecebidos) {
                         // Redirecione para outra página
                         window.location.href = "escolhaEnfermeiro.html";
-                    } else if (!dadosRecebidos.auth) {
+                    } else if (!dadosRecebidos) {
                         // Exiba um aviso de que os dados são divergentes
                         alert("Os dados são divergentes. Por favor, verifique suas credenciais.");
                     } else {

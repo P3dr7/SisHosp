@@ -128,7 +128,7 @@
             form.appendChild(criarInput('Horario_Entrada', 'Horário de Entrada', formatarDataHora(prontuario.Horario_Entrada)));
             form.appendChild(criarInput('Horario_Saida', 'Horário de Saída', formatarDataHora(prontuario.Horario_Saida)));
             form.appendChild(criarInput('Receita', 'Receita', prontuario.Receita));
-            form.appendChild(criarInput('Observacoes', 'Observações', prontuario.Observacoes, true));
+            form.appendChild(criarInput('Observacoes', 'Observações', prontuario.Observacoes));
             form.appendChild(criarInput('Pressao_Paciente', 'Pressão do Paciente', prontuario.Pressao_Paciente));
             form.appendChild(criarInput('farm_resp', 'Farmacêutico Responsável', prontuario.farm_resp));
 
@@ -164,21 +164,27 @@
         
         function atualizarProntuario(idProntuario, nomePac) {
             // Obter os dados do formulário
-            const formData = new FormData(document.querySelector('form'));
-            console.logi(idProntuario)
-            console.log(nomePac)
+            const horarioEntrada = document.querySelector('input[name="Horario_Entrada"]').value;
+            const Nome_Paciente = document.querySelector('input[name="Nome_Paciente"]').value;
+            const Id_Prontuario = document.querySelector('input[name="Id_Prontuario"]').value;
+            const Horario_Saida = document.querySelector('input[name="Horario_Saida"]').value;
+            const Receita = document.querySelector('input[name="Receita"]').value;
+            const Observacoes = document.querySelector('input[name="Observacoes"]').value;
+            const Pressao_Paciente = document.querySelector('input[name="Pressao_Paciente"]').value;
+            const farm_resp = document.querySelector('input[name="farm_resp"]').value;
+
             // Converter FormData para objeto JSON
             const jsonData = {};
-            formData.forEach((value, key) => {
-                jsonData[key] = value;
-            });
-        
-            // Adicionar o ID do prontuário aos dados
+            
+            //Adiciona dados no Json
             jsonData.Id_Prontuario = idProntuario;
-        
-            // Adicionar o nome do paciente aos dados
             jsonData.NomePac = nomePac;
-        
+            jsonData.HEntrada = horarioEntrada;
+            jsonData.HSaida = Horario_Saida;
+            jsonData.Receita = Receita;
+            jsonData.Obs = Observacoes;
+            jsonData.Pressao = Pressao_Paciente;
+            jsonData.farmResp = farm_resp;
             // Exibir o JSON no console
             console.log(jsonData);
         
@@ -192,7 +198,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                alert(data.mensage)
             })
             .catch(error => console.error('Erro ao fazer solicitação de atualização:', error));
         }

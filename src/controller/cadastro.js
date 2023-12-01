@@ -5,12 +5,14 @@ import {
 	verificaEmailExists,
 } from "../config/Verifica.js";
 import bcrypt from "bcrypt";
+import jwt from 'jsonwebtoken';
+import { setRedis } from "../redisConfig.js";
 
 const database = new DatabaseSQL();
 
 export const cadastra = async (request, reply) => {
 	const dadosRecebidos = request.body;
-	console.log(dadosRecebidos)
+	// console.log(dadosRecebidos)
 	const { email, confEmail, senha, confSenha } = dadosRecebidos
 	try {
 		const veriEmailExists = await verificaEmailExists(email);
@@ -38,7 +40,18 @@ export const cadastra = async (request, reply) => {
 			email,
 			senha: senhaHash, // Armazenar a senha criptografada
 		});
-		
+
+
+		let secret = 'chave_secreta'
+
+        const token = jwt.sign({email}, secret, { expiresIn: 60 });
+
+        const dados = { auth: true, token: token }
+        // console.log(dados);
+
+        //user-id
+        await setRedis('verificaUser', JSON.stringify(dados));
+
 		return reply.status(201).send();
 	} catch (error) {
 		console.error("Erro ao criar cadastro:", error);

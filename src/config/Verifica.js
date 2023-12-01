@@ -231,3 +231,20 @@ export async function diminuiRem(idRem, qnt){
         throw error
     }
   }
+
+  export async function transformaHora(hora){
+
+    // Divida a data e a hora
+    const partes = hora.split(', ');
+
+    // Parte da data no formato "DD/MM/YYYY"
+    const dataPartes = partes[0].split('/');
+    const dataFormatada = `${dataPartes[2]}-${dataPartes[1]}-${dataPartes[0]}`;
+
+    // Parte da hora no formato "HH:mm:ss"
+    const horaFormatada = partes[1];
+
+    // Combine a data e a hora no novo formato
+    const dataHoraFormatada = `${dataFormatada} ${horaFormatada}`;
+    return dataHoraFormatada
+    }

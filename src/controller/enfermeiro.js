@@ -3,7 +3,7 @@ import {
 	verificaPacienteExists,
 	verificaProntuario,
 	getNameById,
-	getProntuarioById
+	getProntuarioById, transformaHora
 } from "../config/Verifica.js";
 import { DatabaseSQLProntuario } from "../db/prontuario.js";
 import { DatabaseSQLTem } from "../db/tem.js";
@@ -67,11 +67,15 @@ export const cadastraProntuario = async (request, reply) => {
 
 export const cadastraPaciente = async (request, reply) => {
 	try {
-		const cache = recuperarDoCache();
-		if(cache.auth = false || !cache){
+		const cache = await recuperarDoCache();
+		console.log(cache)
+		if(cache.auth === false || !cache){
 			return reply.status(401).send({ error: "Nao esta Logado" });
 		}
+		const auth =  cache.auth
+		console.log(auth)
 		const idCadstro = cache.userId;
+		console.log(idCadstro)
 		// console.log(idCadstro)
 		const verEnf = await verificaEnfermerio(idCadstro);
 		// console.log(verEnf)
@@ -90,6 +94,7 @@ export const cadastraPaciente = async (request, reply) => {
 			nome,
 			peso,
 		});
+		return reply.send(auth)
 	} catch (error) {
 		console.error("Erro ao criar protocolo:", error);
 		return reply
@@ -115,10 +120,20 @@ export const recuperaPaciente = async (request, reply) => {
 export const atualizaPaciente = async(request, reply) => {
 	try{
 	const dadosRecebidos = request.body
-	console.log(dadosRecebidos)
-	const { IdPront, HEntrada, HSaida, Receita, Obs, Pressao, farmResp } = dadosRecebidos
-	
-	reply.send(dadosRecebidos)
+	// console.log(dadosRecebidos)
+	const { Id_Prontuario, NomePac, HEntrada, HSaida, Receita, Obs, Pressao, farmResp } = dadosRecebidos
+	database.update({
+		Id_Prontuario, 
+		NomePac,  
+		HEntrada: await transformaHora(HEntrada), 
+		HSaida: await transformaHora(HSaida), 
+		Receita, 
+		Obs, 
+		Pressao, 
+		farmResp
+	})
+
+	reply.send({"mensage":"Dados Atualizados"})
 	}catch (error) {
 		console.error("Erro ao atualizar paciente:", error);
 		return reply
