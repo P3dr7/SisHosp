@@ -6,7 +6,7 @@ import * as medicos from "./controller/medico.js"
 import { verificaLogado } from "./config/verificaLogin.js";
 import { recuperarDoCache } from "./config/cache.js";
 import { veriCadastrado } from "./config/verificaCadastrado.js";
-
+import { verificarCargo } from "./config/verificaCargo.js"
 
 export default function (fastify, options, done) {
 	// POST
@@ -19,7 +19,7 @@ export default function (fastify, options, done) {
 	fastify.post("/verificaLogin", verificaLogado)
 	fastify.post("/removeRem", farmaceutico.deleteRemedios)
 	fastify.post("/getPront", enfermeiro.recuperaPaciente)
-
+	fastify.post("/verificaCargos", verificarCargo)
 	// GET
 	fastify.get("/verificaLogin", verificaLogado)
 	fastify.get("/teste", recuperarDoCache)

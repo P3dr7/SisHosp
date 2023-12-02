@@ -247,4 +247,4 @@ export async function diminuiRem(idRem, qnt){
     // Combine a data e a hora no novo formato
     const dataHoraFormatada = `${dataFormatada} ${horaFormatada}`;
     return dataHoraFormatada
-    }
+    }   

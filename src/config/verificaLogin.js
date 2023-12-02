@@ -16,7 +16,7 @@ export async function verificaLogado(request, reply){
 
         // Verificar se o usuário foi encontrado
         if (rows.length === 0) {
-            return reply.status(400).send('Usuário não encontrado');
+            return reply.status(400).send({"error":'Usuário não encontrado'});
 
         }
 

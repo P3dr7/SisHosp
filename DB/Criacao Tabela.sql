@@ -1,3 +1,4 @@
+use app_saude;
 CREATE TABLE Funcionario (
     Idade_Funcionario int(3),
     Nome_Funcionario varchar(255),
@@ -11,7 +12,9 @@ CREATE TABLE Prontuario (
     Horario_Saida datetime,
     Receita varchar(255),
     Observacoes varchar(255),
-    Pressao_Paciente float(10,2)
+    Pressao_Paciente float(10,2),
+    farm_resp varchar(45),
+    paciente varchar(45)
 );
 
 CREATE TABLE Remedios (
@@ -28,7 +31,8 @@ CREATE TABLE Paciente (
 CREATE TABLE Cadastro(
 ID bigint(255) PRIMARY KEY,
 email varchar(255),
-senha varchar(255)
+senha varchar(255),
+verificacao int(2)
 );
     
 CREATE TABLE `app_saude`.`farmaceutico` (
