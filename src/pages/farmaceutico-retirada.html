@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -65,7 +65,7 @@
                     window.location.href = "escolhaFarmaceutico.html";
                 } else if (!dadosRecebidos.auth) {
                     // Exiba um aviso de que os dados são divergentes
-                    alert("Os dados são divergentes. Por favor, verifique suas credenciais.");
+                    alert(dadosRecebidos.mensage);
                 } else {
                     throw new Error("Erro na solicitação da API");
                 }

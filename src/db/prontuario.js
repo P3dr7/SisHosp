@@ -47,7 +47,9 @@ export class DatabaseSQLProntuario {
 
 	async delete(idPront){
 		const sql = "delete from prontuario where Id_Prontuario = ?"
+		const sql2 = "delete from tem where fk_tem_prontuario_id = ?"
 		try{
+			await connection.query(sql2, idPront)
 			await connection.query(sql, idPront)
 		}catch (error) {
 			console.error("Erro ao excluir do banco de dados:", error);

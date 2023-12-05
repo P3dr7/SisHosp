@@ -76,7 +76,7 @@
                 if (dadosRecebidos.auth === true) {
                     window.location.href = "escolhaEnfermeiro.html";
                 } else if (!dadosRecebidos.auth) {
-                    alert("Usuário não logado");
+                    alert(dadosRecebidos.mensage);
                 } else {
                     throw new Error("Erro na solicitação da API");
                 }

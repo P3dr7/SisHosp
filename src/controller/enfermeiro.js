@@ -147,7 +147,7 @@ export const deleteProntuario = async(request, reply) =>{
 		const id = request.body
 		console.log(id)
 		database.delete(id)
-	reply.status(200).send(OK)
+	reply.status(200).send({"mensage":"Prontuario Deletado"})
 	}catch (error) {
 		console.error("Erro ao atualizar paciente:", error);
 		return reply
